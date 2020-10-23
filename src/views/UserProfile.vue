@@ -24,29 +24,23 @@
 </template>
 
 <script>
-import TwootItem from './TwootItem'
-import CreateTwootPanel from './CreateTwootPanel'
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { users } from '../assets/users'
+import TwootItem from '../components/TwootItem'
+import CreateTwootPanel from '../components/CreateTwootPanel'
 
 export default {
   name: 'UserProfile',
   components: { CreateTwootPanel, TwootItem },
   // composition API
   setup() {
+    const route = useRoute()
+    const userId = computed(() => route.params.userId)
+
     const state = reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: '_PabloRocha',
-        firstName: 'Pablo',
-        lastName: 'Rocha',
-        email: 'pablo@pablorocha.me',
-        isAdmin: true,
-        twoots: [
-          { id: 1, content: 'Twotter is Amazing!' },
-          { id: 2, content: "Don't forget to subscribe!" },
-        ],
-      },
+      user: users[userId.value - 1] || users[0],
     })
 
     function addTwoot(twoot) {
@@ -59,6 +53,7 @@ export default {
     return {
       state,
       addTwoot,
+      userId,
     }
   },
   // old API
