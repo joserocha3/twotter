@@ -4,27 +4,25 @@
       <router-link to="/">
         <div class="navigation__logo">Twoter</div>
       </router-link>
-      <div class="navigation__user">{{ state.user.username }}</div>
+      <div v-if="user" class="navigation__user">{{ user.username }}</div>
     </nav>
     <router-view />
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 
 export default {
   name: 'App',
   // composition API
   setup() {
-    const state = reactive({
-      user: {
-        username: '_PabloRocha',
-      },
-    })
+    const store = useStore()
+    const user = computed(() => store.state.User.user)
 
     return {
-      state,
+      user,
     }
   },
   // old API
